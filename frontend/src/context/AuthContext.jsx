@@ -3,6 +3,9 @@ import axios from 'axios';
 
 const AuthContext = createContext();
 
+const backend_url = import.meta.env.VITE_BACKEND_URL
+console.log(backend_url)
+
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -17,10 +20,11 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post(`${import.meta.env.BACKEND_URL}/api/auth/login`, {
+            const { data } = await axios.post(`${backend_url}/api/auth/login`, {
                 email,
                 password,
             });
+
             localStorage.setItem('userInfo', JSON.stringify(data));
             setUser(data);
             return { success: true };
@@ -34,7 +38,7 @@ export const AuthProvider = ({ children }) => {
 
     const signup = async (name, email, password, role, githubUsername) => {
         try {
-            const { data } = await axios.post(`${import.meta.env.BACKEND_URL}/api/auth/signup`, {
+            const { data } = await axios.post(`${backend_url}/api/auth/signup`, {
                 name,
                 email,
                 password,
