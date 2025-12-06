@@ -1,5 +1,8 @@
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import dotenv from "dotenv";
+dotenv.config();
+
 
 const AuthContext = createContext();
 
@@ -17,7 +20,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const { data } = await axios.post('http://localhost:5001/api/auth/login', {
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/login`, {
                 email,
                 password,
             });
@@ -34,7 +37,7 @@ export const AuthProvider = ({ children }) => {
 
     const signup = async (name, email, password, role, githubUsername) => {
         try {
-            const { data } = await axios.post('http://localhost:5001/api/auth/signup', {
+            const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/signup`, {
                 name,
                 email,
                 password,
