@@ -11,6 +11,8 @@ const InternshipDetails = () => {
     const [loading, setLoading] = useState(true);
     const [isSaved, setIsSaved] = useState(false);
 
+    const backend_url = import.meta.env.VITE_BACKEND_URL
+
     useEffect(() => {
         const fetchInternship = async () => {
             try {
@@ -19,10 +21,10 @@ const InternshipDetails = () => {
                         Authorization: `Bearer ${user.token}`,
                     },
                 };
-                const { data } = await axios.get(`http://localhost:5001/api/internships/${id}`, config);
+                const { data } = await axios.get(`${backend_url}/api/internships/${id}`, config);
                 setInternship(data);
 
-                const savedRes = await axios.get('http://localhost:5001/api/user/saved', config);
+                const savedRes = await axios.get('${backend_url}/api/user/saved', config);
                 const savedIds = savedRes.data.map(item => item._id);
                 if (savedIds.includes(id)) {
                     setIsSaved(true);
@@ -47,7 +49,7 @@ const InternshipDetails = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.post(`http://localhost:5001/api/user/saved/${id}`, {}, config);
+            const { data } = await axios.post(`${backend_url}/api/user/saved/${id}`, {}, config);
             setIsSaved(data.isSaved);
             toast.success(data.message);
         } catch (error) {

@@ -4,6 +4,8 @@ import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { Github, Mail, Lock, ArrowRight } from 'lucide-react';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL
+
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -25,7 +27,7 @@ const Login = () => {
     };
 
     const handleGithubLogin = () => {
-        window.location.href = 'http://localhost:5001/api/auth/github';
+        window.location.href = `${backend_url}/api/auth/github`;
     };
 
     return (

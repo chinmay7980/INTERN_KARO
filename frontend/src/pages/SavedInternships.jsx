@@ -5,6 +5,8 @@ import AuthContext from '../context/AuthContext';
 import { Bookmark, Trash2, MapPin, Clock, DollarSign } from 'lucide-react';
 import { toast } from 'react-toastify';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL
+
 const SavedInternships = () => {
     const { user } = useContext(AuthContext);
     const [savedInternships, setSavedInternships] = useState([]);
@@ -24,7 +26,7 @@ const SavedInternships = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get('http://localhost:5001/api/user/saved', config);
+            const { data } = await axios.get(`${backend_url}/api/user/saved`, config);
             setSavedInternships(data);
         } catch (error) {
             console.error(error);
@@ -41,7 +43,7 @@ const SavedInternships = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.delete(`http://localhost:5001/api/user/saved/${id}`, config);
+            await axios.delete(`${backend_url}/api/user/saved/${id}`, config);
             setSavedInternships(savedInternships.filter(item => item._id !== id));
             toast.success('Internship removed from saved list');
         } catch (error) {

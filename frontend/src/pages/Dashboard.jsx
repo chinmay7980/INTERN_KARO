@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { Search, MapPin, Clock, DollarSign, ChevronLeft, ChevronRight, Bookmark, BookmarkCheck, Edit, X } from 'lucide-react';
 import { toast } from 'react-toastify';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL
+
 const Dashboard = () => {
     const { user } = useContext(AuthContext);
     const [internships, setInternships] = useState([]);
@@ -52,7 +54,7 @@ const Dashboard = () => {
                 },
             };
 
-            const { data } = await axios.get('http://localhost:5001/api/internships', config);
+            const { data } = await axios.get(`${backend_url}/api/internships`, config);
 
             if (data.internships && data.pagination) {
                 setInternships(data.internships || []);
@@ -89,7 +91,7 @@ const Dashboard = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get('http://localhost:5001/api/user/saved', config);
+            const { data } = await axios.get(`${backend_url}/api/user/saved`, config);
             setSavedInternships(data.map(i => i._id));
         } catch (error) {
             console.error(error);
@@ -132,7 +134,7 @@ const Dashboard = () => {
                 },
             };
             const { data } = await axios.post(
-                `http://localhost:5001/api/user/saved/${internshipId}`,
+                `${backend_url}/api/user/saved/${internshipId}`,
                 {},
                 config
             );
@@ -187,7 +189,7 @@ const Dashboard = () => {
             };
 
             await axios.put(
-                `http://localhost:5001/api/internships/${editingInternship._id}`,
+                `${backend_url}/api/internships/${editingInternship._id}`,
                 dataToSend,
                 config
             );

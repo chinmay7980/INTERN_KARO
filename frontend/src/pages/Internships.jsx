@@ -3,6 +3,8 @@ import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL
+
 const Internships = () => {
     const { user } = useContext(AuthContext);
     const [internships, setInternships] = useState([]);
@@ -17,7 +19,7 @@ const Internships = () => {
                         Authorization: `Bearer ${user.token}`,
                     },
                 };
-                const { data } = await axios.get('http://localhost:5001/api/internships', config);
+                const { data } = await axios.get(`${backend_url}/api/internships`, config);
                 setInternships(data);
             } catch (error) {
                 console.error(error);

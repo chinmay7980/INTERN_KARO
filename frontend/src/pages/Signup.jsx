@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { Github, User, Mail, Lock, ArrowRight } from 'lucide-react';
-
+const backend_url = import.meta.env.VITE_BACKEND_URL
 const Signup = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -27,7 +27,7 @@ const Signup = () => {
     };
 
     const handleGithubSignup = () => {
-        window.location.href = 'http://localhost:5001/api/auth/github';
+        window.location.href = `${backend_url}/api/auth/github`;
     };
 
     return (

@@ -5,6 +5,8 @@ import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { Github, MapPin, Clock, DollarSign, ExternalLink, Trash2, Edit2, X } from 'lucide-react';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL
+
 const Profile = () => {
     const { user, logout, updateUser } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -29,7 +31,7 @@ const Profile = () => {
                         Authorization: `Bearer ${user.token}`,
                     },
                 };
-                const { data } = await axios.get('http://localhost:5001/api/user/saved', config);
+                const { data } = await axios.get(`${backend_url}/api/user/saved`, config);
                 setSavedInternships(data);
             } catch (error) {
                 console.error('Failed to fetch saved internships');
@@ -65,7 +67,7 @@ const Profile = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get('http://localhost:5001/api/github/profile', config);
+            const { data } = await axios.get(`${backend_url}/api/github/profile`, config);
             setGithubData(data);
             toast.success('GitHub profile synced successfully');
         } catch (error) {
@@ -84,7 +86,7 @@ const Profile = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.delete('http://localhost:5001/api/user/account', config);
+            await axios.delete(`${backend_url}/api/user/account`, config);
             toast.success('Account deactivated successfully');
             logout();
             navigate('/login');
@@ -128,7 +130,7 @@ const Profile = () => {
                 skills: editFormData.skills.split(',').map(s => s.trim()).filter(s => s),
             };
 
-            const { data } = await axios.put('http://localhost:5001/api/user/profile', dataToSend, config);
+            const { data } = await axios.put(`${backend_url}/api/user/profile`, dataToSend, config);
 
             // Update user in context
             updateUser({

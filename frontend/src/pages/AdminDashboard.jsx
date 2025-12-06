@@ -4,6 +4,8 @@ import AuthContext from '../context/AuthContext';
 import { Plus, Edit, Trash2, X } from 'lucide-react';
 import { toast } from 'react-toastify';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL
+
 const AdminDashboard = () => {
     const { user } = useContext(AuthContext);
     const [internships, setInternships] = useState([]);
@@ -36,7 +38,7 @@ const AdminDashboard = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get('http://localhost:5001/api/internships', config);
+            const { data } = await axios.get(`${backend_url}/api/internships`, config);
 
             if (data.internships) {
                 setInternships(data.internships);
@@ -76,14 +78,14 @@ const AdminDashboard = () => {
 
             if (editingInternship) {
                 await axios.put(
-                    `http://localhost:5001/api/internships/${editingInternship._id}`,
+                    `${backend_url}/api/internships/${editingInternship._id}`,
                     dataToSend,
                     config
                 );
                 toast.success('Internship updated successfully!');
             } else {
                 await axios.post(
-                    'http://localhost:5001/api/internships',
+                    `${backend_url}/api/internships`,
                     dataToSend,
                     config
                 );
@@ -127,7 +129,7 @@ const AdminDashboard = () => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            await axios.delete(`http://localhost:5001/api/internships/${id}`, config);
+            await axios.delete(`${backend_url}/api/internships/${id}`, config);
             toast.success('Internship deleted successfully!');
             fetchInternships();
         } catch (error) {
