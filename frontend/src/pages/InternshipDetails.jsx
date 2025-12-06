@@ -4,6 +4,7 @@ import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 import { toast } from 'react-toastify';
 
+const backend_url = import.meta.env.VITE_BACKEND_URL
 const InternshipDetails = () => {
     const { id } = useParams();
     const { user } = useContext(AuthContext);
@@ -11,7 +12,6 @@ const InternshipDetails = () => {
     const [loading, setLoading] = useState(true);
     const [isSaved, setIsSaved] = useState(false);
 
-    const backend_url = import.meta.env.VITE_BACKEND_URL
 
     useEffect(() => {
         const fetchInternship = async () => {
