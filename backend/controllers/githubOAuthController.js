@@ -10,7 +10,7 @@ const generateToken = (id) => {
 
 const githubLogin = (req, res) => {
   const clientId = process.env.GITHUB_CLIENT_ID;
-  const redirectUri = `${process.env.BACKEND_URL || 'http://localhost:5000'}/api/auth/callback`;
+  const redirectUri = `${process.env.VITE_BACKEND_URL || 'http://localhost:5001'}/api/auth/callback`;
   const scope = 'read:user user:email';
   
   const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
@@ -22,7 +22,7 @@ const githubCallback = async (req, res) => {
   const { code } = req.query;
   
   if (!code) {
-    return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?error=no_code`);
+    return res.redirect(`${process.env.VITE_FRONTEND_URL || 'http://localhost:5173'}/login?error=no_code`);
   }
 
   try {
@@ -43,7 +43,7 @@ const githubCallback = async (req, res) => {
     const accessToken = tokenResponse.data.access_token;
 
     if (!accessToken) {
-      return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?error=no_token`);
+      return res.redirect(`${process.env.VITE_FRONTEND_URL || 'http://localhost:5173'}/login?error=no_token`);
     }
 
     const userResponse = await axios.get('https://api.github.com/user', {
@@ -63,7 +63,7 @@ const githubCallback = async (req, res) => {
     const primaryEmail = emailResponse.data.find((email) => email.primary)?.email || githubUser.email;
 
     if (!primaryEmail) {
-      return res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?error=no_email`);
+      return res.redirect(`${process.env.VITE_FRONTEND_URL || 'http://localhost:5173'}/login?error=no_email`);
     }
 
     let user = await User.findOne({ email: primaryEmail });
@@ -85,10 +85,10 @@ const githubCallback = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:5173'}/auth/success?token=${token}&userId=${user._id}&name=${encodeURIComponent(user.name)}&email=${encodeURIComponent(user.email)}&role=${user.role}&githubUsername=${encodeURIComponent(user.githubUsername || '')}`);
+    res.redirect(`${process.env.VITE_FRONTEND_URL || 'http://localhost:5173'}/auth/success?token=${token}&userId=${user._id}&name=${encodeURIComponent(user.name)}&email=${encodeURIComponent(user.email)}&role=${user.role}&githubUsername=${encodeURIComponent(user.githubUsername || '')}`);
   } catch (error) {
     console.error('GitHub OAuth Error:', error.response?.data || error.message);
-    res.redirect(`${process.env.FRONTEND_URL || 'http://localhost:5173'}/login?error=oauth_failed`);
+    res.redirect(`${process.env.VITE_FRONTEND_URL || 'http://localhost:5173'}/login?error=oauth_failed`);
   }
 };
 
