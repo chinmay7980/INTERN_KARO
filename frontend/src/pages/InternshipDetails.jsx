@@ -24,14 +24,14 @@ const InternshipDetails = () => {
                 const { data } = await axios.get(`${backend_url}/api/internships/${id}`, config);
                 setInternship(data);
 
-                const savedRes = await axios.get('${backend_url}/api/user/saved', config);
+                const savedRes = await axios.get(`${backend_url}/api/user/saved`, config);
                 const savedIds = savedRes.data.map(item => item._id);
                 if (savedIds.includes(id)) {
                     setIsSaved(true);
                 }
             } catch (error) {
                 toast.error('Failed to fetch internship details');
-                console.log({error: error})
+                console.log({ error: error })
             } finally {
                 setLoading(false);
             }
